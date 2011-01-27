@@ -1,0 +1,20 @@
+Iliad Internet Server.
+
+The Iliad Internet Server is a C++ Content Management System designed to manage websites.
+
+INSTALL
+-------
+
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+
+This places a copy of iliad-cgi in your /usr/lib/cgi-bin
+
+In a .htaccess file, you can setup a site with:
+
+RewriteEngine on
+RewriteRule ^(.*)$ /cgi-bin/iliad-cgi [QSA,L,E=ILIAD_CONFIG:/etc/iliad/iliad.dev]
+
