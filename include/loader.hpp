@@ -1,3 +1,6 @@
+#ifndef ILIAD_FILE_LOADER
+#define ILIAD_FILE_LOADER
+
 #include <iliad.hpp>
 #include <package.hpp>
 
@@ -16,3 +19,6 @@ public:
 };
 
 }
+
+#endif
+
