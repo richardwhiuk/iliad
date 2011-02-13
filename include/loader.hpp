@@ -1,6 +1,8 @@
 #ifndef ILIAD_FILE_LOADER
 #define ILIAD_FILE_LOADER
 
+#include <string>
+
 #include <iliad.hpp>
 #include <package.hpp>
 
@@ -15,6 +17,7 @@ public:
 
 	virtual std::map<std::string, Package> packages() = 0;
 
+	virtual std::string name() = 0;
 
 };
 
