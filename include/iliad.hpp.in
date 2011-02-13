@@ -2,3 +2,13 @@
 #define ILIAD_VERSION_MINOR @ILIAD_VERSION_MINOR@
 
 #define ILIAD "@ILIAD_VERSION_MAJOR@ @ILIAD_VERSION_MINOR@"
+
+namespace Iliad {
+
+	class Server;
+	class Package;
+	class Loader;
+	class Module;
+
+}
+
