@@ -2,6 +2,8 @@
 #define ILIAD_FILE_PACKAGE
 
 #include <module.hpp>
+#include <map>
+#include <string>
 
 namespace Iliad {
 
@@ -11,7 +13,7 @@ public:
 	Package(Server& server);
 	virtual ~Package();
 
-	std::map<std::string, Module> modules();
+	std::map<std::string, Iliad::Module* > modules();
 
 };
 

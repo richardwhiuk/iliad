@@ -29,6 +29,7 @@ set(HEADER_FILES
   include/request.hpp
   include/response.hpp
   include/server.hpp
+  include/loader.hpp
 )
 
 set(CGI_SOURCE_FILES
@@ -42,6 +43,7 @@ set(SOURCE_FILES
   src/log.cpp
   src/request.cpp
   src/response.cpp
+  src/loader.cpp
 )
 
 add_executable(iliad-cgi ${HEADER_FILES} ${SOURCE_FILES} ${CGI_HEADER_FILES} ${CGI_SOURCE_FILES})

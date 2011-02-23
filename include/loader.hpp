@@ -12,10 +12,10 @@ class Loader {
 
 public:
 
-	Loader(Server& server);
+	Loader(Iliad::Server& server);
 	virtual ~Loader();
 
-	virtual std::map<std::string, Package> packages() = 0;
+	virtual std::map<std::string, Iliad::Package*> packages() = 0;
 
 	virtual std::string name() = 0;
 
