@@ -1,6 +1,11 @@
 #include <server.hpp>
+#include <core/loader.hpp>
 
 Iliad::Server::Server(){
+
+	Loader* core = new Core::Loader(*this);
+
+	loaders[core->name()] = core;
 
 }
 
