@@ -30,6 +30,7 @@ set(HEADER_FILES
   include/response.hpp
   include/server.hpp
   include/loader.hpp
+  include/package.hpp
   include/core/loader.hpp
 )
 
@@ -45,6 +46,7 @@ set(SOURCE_FILES
   src/request.cpp
   src/response.cpp
   src/loader.cpp
+  src/package.cpp
   src/core/loader.cpp
 )
 
