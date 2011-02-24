@@ -13,6 +13,10 @@ public:
 	virtual std::map<std::string, Iliad::Package*> packages();
 	virtual std::string name();
 
+private:
+
+	Iliad::Server& mServer;
+
 };
 
 }
