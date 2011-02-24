@@ -13,7 +13,8 @@ public:
 	Package(Server& server);
 	virtual ~Package();
 
-	std::map<std::string, Iliad::Module* > modules();
+	virtual std::string name() = 0;
+	virtual std::map<std::string, Iliad::Module* > modules() = 0;
 
 };
 
