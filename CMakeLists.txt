@@ -34,6 +34,7 @@ set(HEADER_FILES
   include/module.hpp
   include/core/loader.hpp
   include/core/config/package.hpp
+  include/core/config/module.hpp
   include/core/storage/package.hpp
 )
 
@@ -53,6 +54,7 @@ set(SOURCE_FILES
   src/module.cpp
   src/core/loader.cpp
   src/core/config/package.cpp
+  src/core/config/module.cpp
   src/core/storage/package.cpp
 )
 

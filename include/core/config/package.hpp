@@ -21,6 +21,10 @@ public:
 
 	virtual std::map<std::string, Iliad::Module*> modules();
 
+private:
+
+	Iliad::Server& mServer;
+
 };
 
 }
