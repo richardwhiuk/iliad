@@ -33,6 +33,7 @@ set(HEADER_FILES
   include/package.hpp
   include/core/loader.hpp
   include/core/config/package.hpp
+  include/core/storage/package.hpp
 )
 
 set(CGI_SOURCE_FILES
@@ -50,6 +51,7 @@ set(SOURCE_FILES
   src/package.cpp
   src/core/loader.cpp
   src/core/config/package.cpp
+  src/core/storage/package.cpp
 )
 
 add_executable(iliad-cgi ${HEADER_FILES} ${SOURCE_FILES} ${CGI_HEADER_FILES} ${CGI_SOURCE_FILES})

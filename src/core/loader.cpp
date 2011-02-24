@@ -1,5 +1,6 @@
 #include <iliad.hpp>
 #include <package.hpp>
+#include <core/storage/package.hpp>
 #include <core/config/package.hpp>
 #include <core/loader.hpp>
 
@@ -22,6 +23,10 @@ std::map<std::string, Iliad::Package*> Iliad::Core::Loader::packages(){
 
 	packages[config->name()] = config;
 	
+	Iliad::Package* storage = new Iliad::Core::Storage::Package(mServer);
+
+	packages[storage->name()] = storage;
+
 	return packages;
 }
 
