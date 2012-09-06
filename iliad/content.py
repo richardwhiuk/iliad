@@ -8,7 +8,8 @@ class Module(iliad.core.module.Module):
 
 class Content:
 
-	def __init__(self, id, content):
+	def __init__(self, id, title, body, format):
+		self._body = body
 		pass
 
 def Get(id=None):
