@@ -1,4 +1,5 @@
 import iliad.core.module
+import jinja2
 
 class Module(iliad.core.module.Module):
 
@@ -13,7 +14,10 @@ class Page:
 		self._main = resource.logic().load('Page.Main')(resource)
 
 	def display(self):
-		return ""
+		env = jinja2.Environment(loader=jinja2.PackageLoader('iliad.output.html','templates'))
+		template = env.get_template('page/main.html')
+		main = self._main.render(env)
+		return template.render(main=main)
 
 class Output(iliad.core.output.Output):
 

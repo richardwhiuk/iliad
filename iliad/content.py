@@ -59,4 +59,8 @@ class Page:
 		def view(self):
 			self._mode = 'view'
 
+		def render(self, env):
+			if self._mode == 'view':
+				template = env.get_template('page/main/content/view.html')
+				return template.render(body=self._content.html())
 
