@@ -12,9 +12,6 @@ class Content:
 		self._body = body
 		pass
 
-	def html(self):
-		return self._body
-
 def Get(id=None):
 	if id != None:
 		result = iliad.core.system.System.database.select(table='content', where=( '=', ('column', 'id'), ('u', id) ))
