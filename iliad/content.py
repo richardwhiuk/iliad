@@ -18,9 +18,11 @@ class Content:
 def Get(id=None):
 	if id != None:
 		result = iliad.core.system.System.database.select(table='content', where=( '=', ('column', 'id'), ('u', id) ))
+		return result.fetch(load)
 
-
-		return result.fetch(lambda x: Content)
+def load(row):
+	module = iliad.core.system.module(id=row['format'])
+	return module.load('Content')
 
 class Page:
 
