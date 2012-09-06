@@ -21,9 +21,12 @@ This is done using environment variables
 
 `ILIAD\_DATABASE` = `iliad.mysql:\\username:password@host:port\database`
 
-Based upon
-----------
+Requirements
+------------
 
-* Uses [py-prefork-server](https://github.com/crustymonkey/py-prefork-server "py-prefork-server")
+* [jinja2](http://jinja.pocoo.org "jinja2")
+* [markdown](http://packages.python.org/Markdown "markdown")
+* [MySQLdb](http://mysql-python.sourceforge.net/MySQLdb.html "MySQLdb")
+* [py-prefork-server](https://github.com/crustymonkey/py-prefork-server "py-prefork-server")
 
 
