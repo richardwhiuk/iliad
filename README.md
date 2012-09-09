@@ -19,7 +19,7 @@ In order for iliad to do anything useful, you need to do some basic configuratio
 
 This is done using environment variables
 
-`ILIAD\_DATABASE` = `iliad.mysql:\\username:password@host:port\database`
+`ILIAD_DATABASE` = `iliad.mysql:\\username:password@host:port\database`
 
 Requirements
 ------------
