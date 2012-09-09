@@ -9,7 +9,7 @@ class Resource:
 		self._output = output
 		self._logic = logic
 		self._base = base
-		self._additional = additional
+		self.additional = additional
 		self._arguments = None
 
 	def get_argument(self):
@@ -17,8 +17,8 @@ class Resource:
 			self._arguments = []
 			if len(self._base) > 0:
 				self._arguments += self._base.strip('/').split('/')
-			if len(self._additional) > 0:
-				self._arguments += self._additional.strip('/').split('/')
+			if len(self.additional) > 0:
+				self._arguments += self.additional.strip('/').split('/')
 		return self._arguments[0]
 
 	def pop_argument(self):
