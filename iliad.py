@@ -7,8 +7,14 @@ import iliad.manager
 import iliad.http.server
 
 def main(args):
-	manager = iliad.manager.Manager(iliad.http.server.Server, port=8080, bindIp='0.0.0.0')
-	manager.run()
+	http = None
+
+	if 'http' in args:
+		http = iliad.manager.Manager(iliad.http.server.Server, port=8080, bindIp='0.0.0.0')
+		http.run()
+
+	if http:
+		http.wait()
 
 if __name__ == "__main__":
 	sys.exit(main(sys.argv))

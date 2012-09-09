@@ -10,7 +10,7 @@ Getting Started
 
 iliad can be run by simply `python iliad.py`
 
-Currently it will be bind to \*:8080 by default
+To run a http server, specify http on the command line - e.g. `python iliad.py http`. Currently it will be bind to \*:8080 by default
 
 Configuration
 -------------
