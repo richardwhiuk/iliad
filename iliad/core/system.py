@@ -73,7 +73,7 @@ def process(request, response):
 	for resource in resources:
 
 		output = iliad.core.output.Get(module=resource.output())
-		logic = output.logic(resource)
+		logic = output.logic(resource=resource, data=Data(request.data))
 
 		result = logic.display()
 

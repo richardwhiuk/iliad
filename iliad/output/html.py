@@ -9,9 +9,9 @@ class Module(iliad.core.module.Module):
 
 class Page:
 
-	def __init__(self, resource):
-		self._resource = resource
-		self._main = resource.logic().load('Page.Main')(resource)
+	def __init__(self, xiResource, xiPrefix, xiData):
+		self._resource = xiResource
+		self._main = xiResource.logic().load('Page.Main')(xiResource, xiPrefix + '/' + str(xiResource.id()), xiData(str(xiResource.id())))
 
 	def display(self):
 		env = jinja2.Environment(loader=jinja2.PackageLoader('iliad.output.html','templates'))
@@ -32,12 +32,16 @@ class Output(iliad.core.output.Output):
 
 		iliad.core.output.Output.__init__(self, **args)
 
-	def logic(self, resource):
+	def logic(self, resource, data, prefix=None):
 
-		return Page(resource)
+		if prefix:
+			prefix += '/page'
+		else:
+			prefix = 'page'
+
+		return Page(resource,prefix,data('page'))
 
 	def render(self, result, response):
-
 
 		if result[0]:
 			response.headers["Location"] = result[1]

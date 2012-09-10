@@ -50,7 +50,7 @@ class Page:
 
 	class Main:
 
-		def __init__(self, resource):
+		def __init__(self, resource, prefix, data):
 			self._resource = resource
 			arg = resource.get_argument()
 			if arg == 'new':
