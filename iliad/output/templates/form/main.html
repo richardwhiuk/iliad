@@ -1,0 +1,9 @@
+<div class="form">
+	<form action="{{ action }}" method="{{ method }}">
+		{% for field in fields %}
+		<div class="form-field">
+			{{ field }}
+		</div>
+		{% endfor %}
+	</form>
+</div>
