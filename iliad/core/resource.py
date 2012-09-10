@@ -48,15 +48,25 @@ class Resource:
 	def output(self):
 		return iliad.core.system.module(id=self._output)
 
-def Get(paths=None, path=None, argument=None):
+def Get(paths=None, path=None, argument=None, base=None, logic=None, output=None):
 	if paths != None:
 		resources = []
 		for path in paths:
 			resources += Get(path=path)
 		return resources
-	elif path != None and argument != None:
-		result = iliad.core.system.System.database.select(table='resource', where=( '=', ('column', 'path'), ('s', path) ), order=('priority', False) )
-			
+	elif (path != None or base != None) and argument != None:
+		where = ('AND', [])
+		if path != None:
+			where[1].append(  ('=', ('column', 'path'), ('s', path) ) )
+		if base != None:
+			where[1].append(  ('=', ('column', 'base'), ('s', base) ) )
+		if logic != None:
+			where[1].append( ('=', ('column', 'logic'), ('u', logic) ) )
+		if output != None:
+			where[1].append( ('=', ('column', 'output'), ('u', output) ) )
+
+		result = iliad.core.system.System.database.select(table='resource', where=where, order=('priority', False) )
+
 		resources = result.fetchall(lambda x: Resource)
 
 		if len(argument) > 0:
