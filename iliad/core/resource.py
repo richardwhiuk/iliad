@@ -15,6 +15,11 @@ class Resource:
 		self._arguments = None
 		self._argument = None
 
+	def __repr__(self):
+		result = '<' + repr(self._id) + ',' + repr(self._path) + ',' + repr(self._output) + ',' + repr(self._output) + ',' + repr(self._logic) + ','
+		result += repr(self._base) + ',' + repr(self._additional) + ',' + repr(self._arguments) + ',' + repr(self._argument) + '>'
+		return result
+
 	def id(self):
 		return self._id
 
