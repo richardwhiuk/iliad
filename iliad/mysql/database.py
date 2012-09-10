@@ -72,6 +72,14 @@ def _where(where):
 		condl = _wcond(where[1])
 		condr = _wcond(where[2])
 		return (condl[0] + " = " + condr[0], condl[1] + condr[1])
+	elif where[0] in ['AND', 'OR']:
+		result = []
+		params = []
+		for wcond in where[1]:
+			cond = _where(wcond)
+			result.append(' ( ' + cond[0] + ' ) ')
+			params += cond[1]
+		return (where[0].join(result), params)
 
 def _wcond(condition):
 
