@@ -14,5 +14,5 @@ converter = pymarkdown.Markdown().convert
 class Content(iliad.content.Content):
 
 	def html(self):
-		return converter(self._body)
+		return converter(self.body())
 

@@ -23,8 +23,7 @@ class Page:
 class Content(iliad.content.Content):
 
 	def html(self):
-		return self._body
-
+		return self.body()
 
 class Output(iliad.core.output.Output):
 
