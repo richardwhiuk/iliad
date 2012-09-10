@@ -23,7 +23,9 @@ class Resource:
 				self._arguments += self._base.strip('/').split('/')
 			if len(self.additional) > 0:
 				self._arguments += self.additional.strip('/').split('/')
-		return self._arguments[0]
+		if len(self._arguments) > 0:
+			return self._arguments[0]
+		return None
 
 	def pop_argument(self):
 		self._arguments.pop(0)
