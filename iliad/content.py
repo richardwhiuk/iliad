@@ -109,7 +109,7 @@ class Page:
 
 			self._form = iliad.form.Form(
 				prefix=xiPrefix,
-				action='',
+				action=self._resource.url(),
 				fields=[
 					{ 'name': 'title', 'label': 'Title', 'type': 'iliad.form.text', 'value': self._content.title },
 					{ 'name': 'body', 'label': 'Body', 'type': 'iliad.form.textarea', 'value': self._content.body },
@@ -124,9 +124,9 @@ class Page:
 				if self._submit == 'Save' or self._submit == 'Save Continue':
 					self._content.save()
 				if self._submit == 'Save':
-					self._redirect = 'view'
+					self._redirect = self._resource.url(argument=str(self._content.id()) + '/view')
 				elif self._submit == 'Save Continue':
-					self._redirect = 'edit'
+					self._redirect = self._resource.url(argument=str(self._content.id()) + '/edit')
 
 		def render(self, env):
 			if self._mode == 'view':
