@@ -5,6 +5,7 @@ class Request:
 		self.path = None
 		self.version = None
 		self.headers = {}
+		self.data = {}
 		self.ip = None
 		self.port = None
 	def __str__(self):
@@ -14,6 +15,9 @@ class Request:
 		result += "\r\n"
 		for k in self.headers.keys():
 			result += k + '=>' + self.headers[k]
+			result += "\r\n"
+		for k in self.data.keys():
+			result += k + '->' + self.data[k]
 			result += "\r\n"
 		return result
 

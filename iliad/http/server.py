@@ -2,6 +2,7 @@ import iliad.core.system
 import preforkserver
 import iliad.http.request
 import iliad.http.response
+import urllib
 
 import os
 import re
@@ -54,8 +55,11 @@ class Server(iliad.preforkserver.BaseChild):
 
 		lRequest.ip, lRequest.port = self.addr
 
-		(First, Header, Done) = range(3)
+		(First, Header, Content, Done) = range(4)
 		mode = First
+
+		content = ""
+		left = None
 
 		while mode != Done:
 
@@ -67,7 +71,7 @@ class Server(iliad.preforkserver.BaseChild):
 			start = 0
 			end = 0
 			search = 0
-			while (mode != Done) and (search < (len(self.data) - 1)):
+			while (mode != Content) and (search < (len(self.data) - 1)):
 				end = self.data.find('\r\n', search)
 				if end == -1:
 					search = len(self.data) - 1
@@ -84,7 +88,7 @@ class Server(iliad.preforkserver.BaseChild):
 						raise Exception("Invalid iliad.http.request")
 				elif mode == Header:
 					if (end - start) == 0:
-						mode = Done
+						mode = Content
 						search = end + 2
 						start = end + 2
 					else:
@@ -95,13 +99,38 @@ class Server(iliad.preforkserver.BaseChild):
 							key = match.group(1)
 							if key in lRequest.headers:
 								raise Exception("Duplicate header detected")
-							lRequest.headers[key] = match.group(2)
+							lRequest.headers[key] = match.group(2).strip()
 						else:
 							raise Exception("Invalid header")
+			if mode == Content:
+				if 'Transfer-Encoding' in lRequest.headers:
+					raise Exception("Not implemented")
+				elif 'Content-Length' in lRequest.headers:
+					if left == None:
+						left = int(lRequest.headers['Content-Length'])
+					if left <= (len(self.data) - start):
+						content += self.data[start:(start + left)]
+						left = 0
+					else:
+						content += self.data[start:]
+						left -= len(self.data) - 1 - start
+						search = len(self.data)
+					if left == 0:
+						self.parseContent(lRequest, content)
+						mode = Done 
+				else:
+					mode = Done
 
 			self.data = self.data[start:]
 
 		return lRequest
+
+	def parseContent(self, xiRequest, xiContent):
+		if len(xiContent) > 0:
+			data = xiContent.split('&')
+			for var in data:
+				kv = var.split('=', 2)
+				xiRequest.data[urllib.unquote_plus(kv[0])] = urllib.unquote_plus(kv[1])
 
 	def respond(self, xiResponse):
 		try:
