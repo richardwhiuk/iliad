@@ -43,6 +43,9 @@ def Get(id=None):
 	if id != None:
 		result = iliad.core.system.System.database.select(table='content', where=( '=', ('column', 'id'), ('u', id) ))
 		return result.fetch(load)
+	else:
+		result = iliad.core.system.System.database.select(table='content')
+		return result.fetchall(load)
 
 def load(row):
 	module = iliad.core.system.module(id=row['format'])
