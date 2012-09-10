@@ -1,6 +1,10 @@
 import MySQLdb
 import iliad.core.system
 
+class Update:
+	def __init__(self, cursor):
+		self.__cursor = cursor
+
 class Select:
 	def __init__(self, cursor):
 		self.__cursor = cursor
@@ -39,6 +43,28 @@ class Database:
 		cursor.execute(stmt, params)
 		
 		return Select(cursor)
+
+	def update(self, table, update, where = None ):
+		stmt = "UPDATE `%s` SET " % table
+		params = []
+
+		ustmt = []
+		for k in update:
+			cond = _wcond(update[k])
+			ustmt.append( ("`%s` = " % k) + cond[0] )
+			params += cond[1]
+
+		stmt += ', '.join(ustmt)
+
+		if where:
+			wresult = _where(where)
+			stmt += " WHERE " + wresult[0]
+			params += wresult[1]
+		
+		cursor = self.db.cursor()
+		cursor.execute(stmt, params)
+		
+		return Update(cursor)
 
 def _where(where):
 
