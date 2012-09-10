@@ -9,9 +9,11 @@ class Request:
 		self.port = None
 	def __str__(self):
 		result = self.ip + ':' + str(self.port)
-		result += self.method + ' ' + self.path + ' ' + self.version + '{'
+		result += "\r\n"
+		result += self.method + ' ' + self.path + ' ' + self.version
+		result += "\r\n"
 		for k in self.headers.keys():
 			result += k + '=>' + self.headers[k]
-		result += result + '}'
+			result += "\r\n"
 		return result
 
