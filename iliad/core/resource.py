@@ -92,18 +92,14 @@ def Get(paths=None, path=None, argument=None, base=None, logic=None, output=None
 	elif path != None:
 		path = path.strip('/')
 		parts = string.split(path, '/')
-
 		paths = [ (path, '')]
+		resources = []
 	
 		for i in range(1, len(parts) + 1):
-				
 			paths.append( ( '/'.join(parts[:-i]) , '/'.join(parts[-i:]) ) )
 
-		resources = []
-
 		for (path, argument) in paths:
-
-			resources += Get(path=path, argument=argument)
+			resources += Get(path=path, argument=argument, logic=logic, output=output)
 
 		return resources
 
