@@ -74,7 +74,21 @@ def Get(paths=None, path=None, argument=None, base=None, logic=None, output=None
 				resource.argument(argument)
 
 		return resources
-		
+
+	elif argument != None:
+		path = argument.strip('/')
+		parts = string.split(path, '/')
+		arguments = [ (argument, '')]
+		resources = []
+
+		for i in range(1, len(parts) + 1):
+			arguments.append( ( '/'.join(parts[:-i]) , '/'.join(parts[-i:]) ) )
+
+		for (base, additional) in arguments:
+			resources += Get(base=base, argument=additional, logic=logic, output=output)
+
+		return resources
+
 	elif path != None:
 		path = path.strip('/')
 		parts = string.split(path, '/')
