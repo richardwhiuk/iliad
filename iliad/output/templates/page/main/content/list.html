@@ -1,0 +1,8 @@
+<div class="content content-view page-main-content page-main-content-view">
+	<ul>
+		{% for entry in content %}
+		<li><a href="{{ entry.url }}">{{ entry.title }}</a></li>
+		{% endfor %}
+	</ul>
+</div>
+

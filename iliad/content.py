@@ -128,6 +128,10 @@ class Page:
 				elif self._submit == 'Save Continue':
 					self._redirect = self._resource.url(argument=str(self._content.id()) + '/edit')
 
+		def list(self):
+			self._mode = 'list'
+			self._content = Get()			
+
 		def render(self, env):
 			if self._mode == 'view':
 				template = env.get_template('page/main/content/view.html')
@@ -141,5 +145,10 @@ class Page:
 					if form[0]:
 						return form
 					return (False, template.render(form=form[1], preview=self._preview, body=self._content.html()))
-
+			elif self._mode == 'list':
+				template = env.get_template('page/main/content/list.html')
+				content = []
+				for entry in self._content:
+					content.append({'title': entry.title(), 'url': self._resource.url(argument=str(entry.id()) + '/view')})
+				return (False, template.render(content=content))
 
