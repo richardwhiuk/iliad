@@ -63,7 +63,7 @@ class Page:
 			elif arg == 'list':
 				resource.pop_argument()
 				self.list()
-			else:
+			elif arg:
 				try:
 					self._content = Get(id=int(arg))
 					resource.pop_argument()
@@ -84,6 +84,8 @@ class Page:
 					self.delete()
 				else:
 					self.view()
+			else:
+				self.list()
 
 		def save(self):
 			self._submit = 'Save'
