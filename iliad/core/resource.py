@@ -7,6 +7,7 @@ class Resource:
 
 	def __init__(self, id, path, base, additional, logic, output):
 		self._id = id
+		self._path = path
 		self._output = output
 		self._logic = logic
 		self._base = base
