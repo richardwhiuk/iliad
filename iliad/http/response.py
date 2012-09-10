@@ -2,6 +2,7 @@
 reason = {
 	100: "Continue",
 	200: "OK",
+	303: "See Other",
 	404: "Not Found",
 	500: "Internal Server Error"
 }
