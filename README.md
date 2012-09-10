@@ -20,6 +20,7 @@ In order for iliad to do anything useful, you need to do some basic configuratio
 This is done using environment variables
 
 `ILIAD_DATABASE` = `iliad.mysql:\\username:password@host:port\database`
+`ILIAD_URL` = `http://domain:8080/path/`
 
 Requirements
 ------------

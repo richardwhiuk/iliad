@@ -1,5 +1,5 @@
 import string
-
+import os
 import iliad.core.system
 import iliad.core.output
 
@@ -41,6 +41,21 @@ class Resource:
 
 	def pop_argument(self):
 		self._arguments.pop(0)
+
+	def url(self, argument=None):
+		if not argument:
+			path = self._path.strip('/')
+			if self._argument:
+				path += '/' + self._argument
+			if path == 'home':
+				path = ''
+			return os.environ['ILIAD_URL'] + path
+		else:
+			resources = Get(logic = self._logic, argument=argument, output = self._output)
+			if len(resources) > 0:
+				return resources[0].url()
+			else:
+				return None
 
 	def logic(self):
 		return iliad.core.system.module(id=self._logic)
