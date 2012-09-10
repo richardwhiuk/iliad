@@ -6,6 +6,42 @@ import iliad.core.module
 class System:
 	output = None
 
+class Data:
+	def __init__(self, data = None, value = None):
+		self._ = {}
+		self._v = value
+		if data:
+			for k in data:
+				self._add(k, data[k])
+
+	def _add(self, k, v):
+		ks = k.split('/', 1)
+		if len(ks) > 1:
+			if ks[0] in self._:
+				self._[ks[0]]._add(ks[1], v)
+			else:
+				self._[ks[0]] = Data({ks[1]: v})
+		else:
+			self._[k] = Data(value=v)
+
+	def value(self):
+		return self._v
+
+	def __call__(self, k):
+		if k in self._:
+			return self._[k]
+		else:
+			return Data()
+
+	def __str__(self):
+		result = "{"
+		for k in self._:
+			result += k + '->' + str(self._[k]) + ","
+		result += "}"
+		if self._v:
+			result += ':' + self._v
+		return result
+
 def initalize(output):
 	iliad.core.system.System.output = output
 	iliad.core.system.System.database = iliad.core.database.Database.Load()
