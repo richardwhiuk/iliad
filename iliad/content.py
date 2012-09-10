@@ -36,6 +36,7 @@ class Content:
 			if 'body' in self._pending:
 				update['body'] = ('s', self._pending['body'])
 			iliad.core.system.System.database.update(table='content', where=( '=', ('column','id'), ('u', self._id)), update=update)
+			self._pending = {}
 
 def Get(id=None):
 	if id != None:
