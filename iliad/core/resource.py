@@ -6,11 +6,15 @@ import iliad.core.output
 class Resource:
 
 	def __init__(self, id, path, base, additional, logic, output):
+		self._id = id
 		self._output = output
 		self._logic = logic
 		self._base = base
 		self.additional = additional
 		self._arguments = None
+
+	def id(self):
+		return self._id
 
 	def get_argument(self):
 		if not self._arguments:
