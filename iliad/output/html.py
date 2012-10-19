@@ -6,6 +6,7 @@ class Module(iliad.core.module.Module):
 
 	def __init__(self, **args):
 		iliad.core.module.Module.__init__(self, **args)
+		iliad.content.register_format('html', Content, self.id(), 'HTML')
 
 class Page:
 
@@ -21,10 +22,10 @@ class Page:
 			return main
 		return (False, template.render(main=main[1]))
 
-class Content(iliad.content.Content):
+class Content(iliad.content.Plain):
 
 	def html(self):
-		return self.body()
+		return self._content.body()
 
 class Output(iliad.core.output.Output):
 

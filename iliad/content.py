@@ -1,24 +1,58 @@
 import iliad.core.module
 import iliad.form
+import cgi
 
 class Module(iliad.core.module.Module):
 	
 	def __init__(self, **args):
 
 		iliad.core.module.Module.__init__(self, **args)
+		register_format('plain', Plain, self.id(), 'Plain')
+
+content = {}
+
+def get_format_id(module, format, **args):
+	return str(module) + '/' + format
+
+def register_format(format, implementation, module, description):
+	lId = get_format_id(**{'module': module, 'format': format})
+	registration = { 'implementation': implementation, 'module': module, 'id': lId, 'module': module, 'format': format, 'description': description }
+	content[lId] = registration
+	return registration
+
+class Plain:
+	
+	def __init__(self, content):
+		self._content = content
+
+	def html(self):
+		return cgi.escape(self._content.body())
 
 class Content:
 
-	def __init__(self, id, title, body, format):
-		self._id = id
-		self._data = { 'title': title, 'body': body, 'format': format }
+	def __init__(self, id=None, title=None, body=None, format=None, module=None):
 		self._pending = {}
+		if id == None:
+			self._new = True
+			for k in content:
+				if content[k]['format'] == 'plain' and content[k]['implementation'] == Plain:
+					plain = k
+			self._data = { 'title': '', 'body': '', 'format': 'plain', 'module': content[k]['module']}
+			self._implementation = Plain(self)
+		else:
+			self._new = False
+			self._id = id
+			self._data = { 'title': title, 'body': body, 'format': format, 'module': module }
+			self._implementation = content[get_format_id(**self._data)]['implementation'](self)
 
 	def __value(self, name, value=None):
 		if(value):
 			self._pending[name] = value
 			self._data[name] = value
 		return self._data[name]
+
+	def html(self):
+		return self._implementation.html()
 
 	def id(self):
 		return self._id
@@ -28,6 +62,16 @@ class Content:
 
 	def body(self, body=None):
 		return self.__value('body', body)
+
+	def format_id(self, format_id=None):
+		if format_id:
+			(module, format) = format_id.split('/', 2)
+			self.__value('module', module)
+			self.__value('format', format)
+			self._implementation = content[format_id]['implementation'](self)
+			return format_id
+		else:
+			return str(self.__value('module', None)) + '/' + self.__value('format', None)
 
 	def save(self):
 		if len(self._pending) > 0:
@@ -48,8 +92,7 @@ def Get(id=None):
 		return result.fetchall(load)
 
 def load(row):
-	module = iliad.core.system.module(id=row['format'])
-	return module.load('Content')
+	return Content
 
 class Page:
 
