@@ -5,7 +5,6 @@ import cgi
 class Module(iliad.core.module.Module):
 	
 	def __init__(self, **args):
-
 		iliad.core.module.Module.__init__(self, **args)
 		register_format('plain', Plain, self.id(), 'Plain')
 
@@ -192,7 +191,7 @@ class Page:
 
 		def list(self):
 			self._mode = 'list'
-			self._content = Get()			
+			self._content = Get()
 
 		def render(self, env):
 			if self._mode == 'view':
