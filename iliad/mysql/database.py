@@ -1,6 +1,13 @@
 import MySQLdb
 import iliad.core.system
 
+class Insert:
+	def __init__(self, cursor):
+		self.__cursor = cursor
+
+	def new_id(self):
+		return self.__cursor.lastrowid
+
 class Update:
 	def __init__(self, cursor):
 		self.__cursor = cursor
@@ -44,17 +51,16 @@ class Database:
 		
 		return Select(cursor)
 
+	def insert(self, table, insert):
+		(stmt, params) = _update(insert)
+		stmt = ("INSERT INTO `%s` SET " % table) + stmt
+		cursor = self.db.cursor()
+		cursor.execute(stmt, params)
+		return Insert(cursor)
+
 	def update(self, table, update, where = None ):
-		stmt = "UPDATE `%s` SET " % table
-		params = []
-
-		ustmt = []
-		for k in update:
-			cond = _wcond(update[k])
-			ustmt.append( ("`%s` = " % k) + cond[0] )
-			params += cond[1]
-
-		stmt += ', '.join(ustmt)
+		(stmt, params) = _update(update)
+		stmt = ("UPDATE `%s` SET " % table) + stmt
 
 		if where:
 			wresult = _where(where)
@@ -65,6 +71,19 @@ class Database:
 		cursor.execute(stmt, params)
 		
 		return Update(cursor)
+
+def _update(update):
+	stmt = ''
+	params = []
+	ustmt = []
+	for k in update:
+		cond = _wcond(update[k])
+		ustmt.append( ("`%s` = " % k) + cond[0] )
+		params += cond[1]
+
+	stmt += ', '.join(ustmt)
+	return (stmt, params)
+
 
 def _where(where):
 
