@@ -74,14 +74,19 @@ class Content:
 			return str(self.__value('module', None)) + '/' + self.__value('format', None)
 
 	def save(self):
-		if len(self._pending) > 0:
-			update = {}
-			if 'title' in self._pending:
-				update['title'] = ('s', self._pending['title'])
-			if 'body' in self._pending:
-				update['body'] = ('s', self._pending['body'])
-			iliad.core.system.System.database.update(table='content', where=( '=', ('column','id'), ('u', self._id)), update=update)
-			self._pending = {}
+		update = {}
+		for key in ['title','body','format']:
+			if key in self._pending:
+				update[key] = ('s', self._pending[key])
+		if 'module' in self._pending:
+			update['module'] = ('u', self._pending['module'])
+		if self._new:
+			result = iliad.core.system.System.database.insert(table='content', insert=update)
+			self._id = result.new_id()
+		else:
+			if len(update) > 0:
+				iliad.core.system.System.database.update(table='content', where=( '=', ('column','id'), ('u', self._id)), update=update)
+		self._pending = {}
 
 def Get(id=None):
 	if id != None:
@@ -103,9 +108,9 @@ class Page:
 			self._redirect = None
 			self._resource = resource
 			arg = resource.get_argument()
-			if arg == 'new':
+			if arg == 'new' or arg == 'add':
 				resource.pop_argument()
-				self.new()
+				self.new(prefix + '/new', data('new'))
 			elif arg == 'list':
 				resource.pop_argument()
 				self.list()
@@ -146,15 +151,29 @@ class Page:
 		def view(self):
 			self._mode = 'view'
 
+		def new(self, xiPrefix, xiData):
+			self._mode = 'new'
+			self._content = Content()
+			self._update(xiPrefix, xiData)
+
 		def edit(self, xiPrefix, xiData):
 			self._mode = 'edit'
+			self._update(xiPrefix, xiData)
+
+		def _update(self, xiPrefix, xiData):
 			self._preview = False
+
+			lFormatValues = {}
+
+			for (id, format) in content.iteritems():
+				lFormatValues[id] = format['description']
 
 			self._form = iliad.form.Form(
 				prefix=xiPrefix,
 				action=self._resource.url(),
 				fields=[
 					{ 'name': 'title', 'label': 'Title', 'type': 'iliad.form.text', 'value': self._content.title },
+					{ 'name': 'format', 'label': 'Format', 'type': 'iliad.form.select', 'values': lFormatValues, 'value': self._content.format_id},
 					{ 'name': 'body', 'label': 'Body', 'type': 'iliad.form.textarea', 'value': self._content.body },
 					{ 'name': 'preview', 'label': 'Preview', 'type': 'iliad.form.submit', 'value': self.preview },
 					{ 'name': 'save-continue', 'label': 'Save and Continue', 'type': 'iliad.form.submit', 'value': self.save_continue },
@@ -179,11 +198,11 @@ class Page:
 			if self._mode == 'view':
 				template = env.get_template('page/main/content/view.html')
 				return (False, template.render(body=self._content.html()))
-			elif self._mode == 'edit':
+			elif self._mode == 'edit' or self._mode == 'new':
 				if self._redirect:
 					return (True, self._redirect)
 				else:
-					template = env.get_template('page/main/content/edit.html')
+					template = env.get_template('page/main/content/' + self._mode + '.html')
 					form = self._form.render(env)
 					if form[0]:
 						return form
