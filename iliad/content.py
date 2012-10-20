@@ -116,24 +116,27 @@ class Page:
 			elif arg:
 				try:
 					self._content = Get(id=int(arg))
-					resource.pop_argument()
 				except ValueError:
 					self.list()
 					return
 
-				arg = resource.get_argument()
+				if self._content:
+					resource.pop_argument()
+					arg = resource.get_argument()
 
-				if arg == 'view':
-					resource.pop_argument()
-					self.view()
-				elif arg == 'edit':
-					resource.pop_argument()
-					self.edit(prefix + '/' + str(self._content.id()) + '/edit', data(str(self._content.id()))('edit'))
-				elif arg == 'delete':
-					resource.pop_argument()
-					self.delete()
+					if arg == 'view':
+						resource.pop_argument()
+						self.view()
+					elif arg == 'edit':
+						resource.pop_argument()
+						self.edit(prefix + '/' + str(self._content.id()) + '/edit', data(str(self._content.id()))('edit'))
+					elif arg == 'delete':
+						resource.pop_argument()
+						self.delete()
+					else:
+						self.view()
 				else:
-					self.view()
+					self.list()
 			else:
 				self.list()
 
