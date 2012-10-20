@@ -8,6 +8,10 @@ class Insert:
 	def new_id(self):
 		return self.__cursor.lastrowid
 
+class Delete:
+	def __init__(self, cursor):
+		self.__cursor = cursor
+
 class Update:
 	def __init__(self, cursor):
 		self.__cursor = cursor
@@ -57,6 +61,20 @@ class Database:
 		cursor = self.db.cursor()
 		cursor.execute(stmt, params)
 		return Insert(cursor)
+
+	def delete(self, table, where = None ):
+		stmt = "DELETE FROM `%s` " % table
+		params = []
+
+		if where:
+			wresult = _where(where)
+			stmt += " WHERE " + wresult[0]
+			params += wresult[1]
+
+		cursor = self.db.cursor()
+		cursor.execute(stmt, params)
+
+		return Delete(cursor)
 
 	def update(self, table, update, where = None ):
 		(stmt, params) = _update(update)
