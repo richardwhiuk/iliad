@@ -72,6 +72,9 @@ class Content:
 		else:
 			return str(self.__value('module', None)) + '/' + self.__value('format', None)
 
+	def delete(self):
+		iliad.core.system.System.database.delete(table='content', where=( '=', ('column','id'), ('u', self._id)))
+
 	def save(self):
 		update = {}
 		for key in ['title','body','format']:
@@ -132,13 +135,16 @@ class Page:
 						self.edit(prefix + '/' + str(self._content.id()) + '/edit', data(str(self._content.id()))('edit'))
 					elif arg == 'delete':
 						resource.pop_argument()
-						self.delete()
+						self.delete(prefix + '/' + str(self._content.id()) + '/delete', data(str(self._content.id()))('delete'))
 					else:
 						self.view()
 				else:
 					self.list()
 			else:
 				self.list()
+
+		def confirm(self):
+			self._submit = 'Delete'
 
 		def save(self):
 			self._submit = 'Save'
@@ -161,6 +167,24 @@ class Page:
 		def edit(self, xiPrefix, xiData):
 			self._mode = 'edit'
 			self._update(xiPrefix, xiData)
+
+		def delete(self, xiPrefix, xiData):
+			self._mode = 'delete'
+			self._form = iliad.form.Form(
+				prefix=xiPrefix,
+				action=self._resource.url(),
+				fields=[
+					{ 'name': 'confirm', 'label': 'Delete %s' % self._content.title(), 'type': 'iliad.form.submit', 'value': self.confirm }
+				],
+				data=xiData
+			)
+
+			if self._submit:
+				if self._submit == 'Delete':
+					self._content.delete()
+					self._redirect = self._resource.url(argument='list')
+				elif self._submit == 'Cancel':
+					self._redirect = self._resource.url(argument=str(self._content.id()) + '/view')
 
 		def _update(self, xiPrefix, xiData):
 			self._preview = False
@@ -200,6 +224,15 @@ class Page:
 			if self._mode == 'view':
 				template = env.get_template('page/main/content/view.html')
 				return (False, template.render(body=self._content.html()))
+			elif self._mode == 'delete':
+				if self._redirect:
+					return (True, self._redirect)
+				else:
+					template = env.get_template('page/main/content/delete.html')
+					form = self._form.render(env)
+					if form[0]:
+						return form
+					return (False, template.render(form=form[1]))
 			elif self._mode == 'edit' or self._mode == 'new':
 				if self._redirect:
 					return (True, self._redirect)
