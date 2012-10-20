@@ -45,10 +45,10 @@ class Database:
 			wresult = _where(where)
 			stmt += " WHERE " + wresult[0]
 			params += wresult[1]
-		
+
 		cursor = self.db.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute(stmt, params)
-		
+
 		return Select(cursor)
 
 	def insert(self, table, insert):
@@ -66,10 +66,10 @@ class Database:
 			wresult = _where(where)
 			stmt += " WHERE " + wresult[0]
 			params += wresult[1]
-		
+
 		cursor = self.db.cursor()
 		cursor.execute(stmt, params)
-		
+
 		return Update(cursor)
 
 def _update(update):
@@ -84,9 +84,7 @@ def _update(update):
 	stmt += ', '.join(ustmt)
 	return (stmt, params)
 
-
 def _where(where):
-
 	if where[0] == '=':
 		condl = _wcond(where[1])
 		condr = _wcond(where[2])
@@ -101,7 +99,6 @@ def _where(where):
 		return (where[0].join(result), params)
 
 def _wcond(condition):
-
 	if condition[0] == 'column':
 		return ('`%s`' % condition[1], [])
 	else:
